@@ -11,6 +11,21 @@ import com.algaworks.ecommerce.model.Produto;
 public class OperacoesComTransacaoTest extends EntityManagerTest{
 
 	@Test
+	public void removerObjeto() {
+		Produto produto = entityManager.find(Produto.class, 3);
+		
+		entityManager.getTransaction().begin();
+		entityManager.remove(produto);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear(); //Não é necessário na asserção para operação de remoção,
+							   //pois o JPA já limpa da memória pois foi uma remoção.
+		
+		Produto produtoVerificacao = entityManager.find(Produto.class, 3);
+		Assert.assertNull(produtoVerificacao);
+	}
+	
+	@Test
 	public void inserirOPrimeiroObjeto() {
 		Produto produto = Produto.builder()
 			.id(2)
