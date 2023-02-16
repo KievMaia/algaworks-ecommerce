@@ -11,6 +11,26 @@ import com.algaworks.ecommerce.model.Produto;
 public class OperacoesComTransacaoTest extends EntityManagerTest{
 
 	@Test
+	public void inserirObjetoComMerge() {
+		Produto produto = Produto.builder()
+			.id(2)
+			.nome("Microfone Rode Videmic")
+			.descricao("A melhor qualidade de som.")
+			.preco(new BigDecimal("1000"))
+			.build();
+		
+
+		entityManager.getTransaction().begin();
+		entityManager.merge(produto);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+		Assert.assertNotNull(produtoVerificacao);
+	}
+	
+	@Test
 	public void atualizarObjetoGerenciado() {
 		Produto produto = entityManager.find(Produto.class, 1);
 		
