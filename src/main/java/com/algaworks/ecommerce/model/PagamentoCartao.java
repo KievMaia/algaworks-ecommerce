@@ -33,4 +33,5 @@ public class PagamentoCartao {
 	private StatusPagamento status;
 	
 	private String numero;
+	
 }
