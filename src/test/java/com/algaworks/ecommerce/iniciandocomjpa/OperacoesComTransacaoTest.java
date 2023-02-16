@@ -11,6 +11,26 @@ import com.algaworks.ecommerce.model.Produto;
 public class OperacoesComTransacaoTest extends EntityManagerTest{
 
 	@Test
+	public void atualizarObjeto() {
+		Produto produto = Produto.builder()
+			.id(1)
+			.nome("Kidle Paperwhite")
+			.descricao("Conheça o novo Kidle")
+			.preco(new BigDecimal("599"))
+			.build();
+		
+		entityManager.getTransaction().begin();
+		entityManager.merge(produto);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+		Assert.assertNotNull(produtoVerificacao);
+		Assert.assertEquals("Kidle Paperwhite", produto.getNome());
+	}
+	
+	@Test
 	public void removerObjeto() {
 		Produto produto = entityManager.find(Produto.class, 3);
 		
