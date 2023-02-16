@@ -11,6 +11,45 @@ import com.algaworks.ecommerce.model.Produto;
 public class OperacoesComTransacaoTest extends EntityManagerTest{
 
 	@Test
+	public void mostrarDiferencaPersistMerge() {
+		Produto produtoPersist = Produto.builder()
+			.id(5)
+			.nome("Smartphone One Plus")
+			.descricao("O processador mais rápido.")
+			.preco(new BigDecimal("2000"))
+			.build();
+		
+
+		entityManager.getTransaction().begin();
+		entityManager.persist(produtoPersist);
+		produtoPersist.setNome("Smartphone Two Plus");
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Produto produtoVerificacaoPersist = entityManager.find(Produto.class, produtoPersist.getId());
+		Assert.assertNotNull(produtoVerificacaoPersist);
+		
+		Produto produtoMerge = Produto.builder()
+				.id(6)
+				.nome("Notebook Dell")
+				.descricao("O melhor da categoria.")
+				.preco(new BigDecimal("2000"))
+				.build();
+			
+
+			entityManager.getTransaction().begin();
+			produtoMerge = entityManager.merge(produtoMerge);
+			produtoMerge.setNome("Notebook Dell 2");
+			entityManager.getTransaction().commit();
+			
+			entityManager.clear();
+			
+			Produto produtoVerificacaoMerge = entityManager.find(Produto.class, produtoMerge.getId());
+			Assert.assertNotNull(produtoVerificacaoMerge);
+	}
+	
+	@Test
 	public void inserirObjetoComMerge() {
 		Produto produto = Produto.builder()
 			.id(2)
