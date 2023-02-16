@@ -2,6 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,13 +18,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Cliente {
+public class PagamentoBoleto {
 
 	@EqualsAndHashCode.Include
 	@Id
 	private Integer id;
 	
-	private String nome;
+	@ManyToOne
+	private Pedido pedidoId;
 	
-	private SexoCliente sexo;
+	private StatusPagamento status;
+	
+	private String codigoBarras;
 }

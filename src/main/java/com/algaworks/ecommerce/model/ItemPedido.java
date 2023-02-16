@@ -1,7 +1,11 @@
 package com.algaworks.ecommerce.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,13 +21,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Cliente {
+public class ItemPedido {
 
 	@EqualsAndHashCode.Include
 	@Id
 	private Integer id;
 	
-	private String nome;
+	@ManyToOne
+	private Integer pedidoId;
 	
-	private SexoCliente sexo;
+	@OneToOne
+	private Integer produtoId;
+	
+	private BigDecimal precoProduto;
+	
+	private Long quantidade;
 }

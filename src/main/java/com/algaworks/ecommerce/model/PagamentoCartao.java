@@ -17,13 +17,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Cliente {
+public class PagamentoCartao {
 
 	@EqualsAndHashCode.Include
 	@Id
 	private Integer id;
 	
-	private String nome;
+	private Integer pedidoId;
 	
-	private SexoCliente sexo;
+	private StatusPagamento status;
+	
+	private String numero;
 }
