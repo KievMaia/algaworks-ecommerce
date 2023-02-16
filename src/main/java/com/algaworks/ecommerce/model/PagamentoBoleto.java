@@ -2,22 +2,22 @@ package com.algaworks.ecommerce.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 @Entity
 @Table(name = "pagamento_boleto")
 public class PagamentoBoleto {
@@ -29,6 +29,7 @@ public class PagamentoBoleto {
 	@Column(name = "pedido_id")
 	private Integer pedidoId;
 	
+	@Enumerated(EnumType.STRING)
 	private StatusPagamento status;
 	
 	@Column(name = "codigo_barras")
