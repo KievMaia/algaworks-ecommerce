@@ -28,7 +28,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest{
 	@Test
 	public void mostrarDiferencaPersistMerge() {
 		Produto produtoPersist = Produto.builder()
-			.id(5)
+//			.id(5) Comentado pois estamos utilizando strategy IDENTITY
 			.nome("Smartphone One Plus")
 			.descricao("O processador mais rápido.")
 			.preco(new BigDecimal("2000"))
@@ -67,7 +67,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest{
 	@Test
 	public void inserirObjetoComMerge() {
 		Produto produto = Produto.builder()
-			.id(2)
+//			.id(2) Comentado pois estamos utilizando strategy IDENTITY
 			.nome("Microfone Rode Videmic")
 			.descricao("A melhor qualidade de som.")
 			.preco(new BigDecimal("1000"))
@@ -75,12 +75,12 @@ public class OperacoesComTransacaoTest extends EntityManagerTest{
 		
 
 		entityManager.getTransaction().begin();
-		entityManager.merge(produto);
+		Produto produtoPersistido = entityManager.merge(produto);
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
-		Produto produtoVerificacao = entityManager.find(Produto.class, produto.getId());
+		Produto produtoVerificacao = entityManager.find(Produto.class, produtoPersistido.getId());
 		Assert.assertNotNull(produtoVerificacao);
 	}
 	
@@ -136,7 +136,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest{
 	@Test
 	public void inserirOPrimeiroObjeto() {
 		Produto produto = Produto.builder()
-			.id(2)
+//			.id(2) Comentado pois estamos utilizando strategy IDENTITY
 			.nome("Câmera Canon")
 			.descricao("A melhor definicao para suas fotos.")
 			.preco(new BigDecimal("5000"))

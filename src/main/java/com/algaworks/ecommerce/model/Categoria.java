@@ -25,7 +25,7 @@ public class Categoria {
 
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tabela")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@TableGenerator(name = "tabela", 
 					table = "hibernate_sequences", 
 					pkColumnName = "sequence_name", 

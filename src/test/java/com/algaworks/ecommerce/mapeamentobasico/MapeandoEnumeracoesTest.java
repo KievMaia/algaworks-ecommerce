@@ -12,7 +12,7 @@ public class MapeandoEnumeracoesTest extends EntityManagerTest{
 	@Test
 	public void testarEnum() {
 		Cliente cliente = Cliente.builder()
-			.id(4)
+//			.id(4) Comentado porque está sendo utilizado strategy IDENTITY
 			.nome("José Mineiro")
 			.sexo(SexoCliente.MASCULINO)
 			.build();
@@ -23,7 +23,7 @@ public class MapeandoEnumeracoesTest extends EntityManagerTest{
 		
 		entityManager.clear();
 		
-		Cliente clienteVerificacao = entityManager.find(Cliente.class, 4);
+		Cliente clienteVerificacao = entityManager.find(Cliente.class, 3);
 		Assert.assertNotNull(clienteVerificacao);
 	}
 }
