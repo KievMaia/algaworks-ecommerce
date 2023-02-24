@@ -33,7 +33,7 @@ public class RelacionamentoOneToOne extends EntityManagerTest{
 		Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
 		Assert.assertNotNull(pedidoVerificacao);
 	}
-	
+	 
 	@Test
 	public void verificarRelacionamentoPedidoNotaFiscal() {
 		Pedido pedido = entityManager.find(Pedido.class, 1);
