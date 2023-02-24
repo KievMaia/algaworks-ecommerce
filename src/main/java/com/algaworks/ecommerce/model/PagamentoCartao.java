@@ -29,7 +29,7 @@ public class PagamentoCartao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToOne
+	@OneToOne(optional = false)
 	private Pedido pedido;
 	
 	@Enumerated(EnumType.STRING)

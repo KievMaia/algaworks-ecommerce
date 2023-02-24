@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -43,5 +44,8 @@ public class Produto {
 				joinColumns = @JoinColumn(name = "produto_id"),
 				inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias;
+	
+	@OneToOne(mappedBy = "produto")
+	private Estoque estoque;
 
 }

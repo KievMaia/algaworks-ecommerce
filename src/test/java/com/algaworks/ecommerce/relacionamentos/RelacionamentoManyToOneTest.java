@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Cliente;
+import com.algaworks.ecommerce.model.Estoque;
 import com.algaworks.ecommerce.model.ItemPedido;
 import com.algaworks.ecommerce.model.Pedido;
 import com.algaworks.ecommerce.model.Produto;
@@ -47,5 +48,24 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest{
 		
 		ItemPedido itemPedidoVerificacao = entityManager.find(ItemPedido.class, 1);
 		Assert.assertNotNull(itemPedidoVerificacao);
+	}
+	
+	@Test
+	public void verificarRelacionamentoEstoque() {
+		Produto produto = entityManager.find(Produto.class, 3);
+		
+		Estoque estoque = Estoque.builder()
+			.produto(produto)
+			.quantidade(20)
+			.build();
+		
+		entityManager.getTransaction().begin();
+		entityManager.persist(estoque);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		Estoque estoqueVerificacao = entityManager.find(Estoque.class, 2);
+		Assert.assertNotNull(estoqueVerificacao);
 	}
 }

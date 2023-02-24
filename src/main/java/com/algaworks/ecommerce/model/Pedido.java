@@ -38,7 +38,7 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Cliente cliente;
 	
 	@Column(name = "data_pedido")
