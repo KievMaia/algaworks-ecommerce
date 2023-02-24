@@ -24,10 +24,10 @@ public class FlushTest extends EntityManagerTest {
 			}
 			
 			// Uma consulta obriga o JPA a sincronizar o que ele tem na memória.
-//			Pedido pedidoPago2 = entityManager.createQuery("SELECT p FROM Pedido p WHERE p.id = 1", Pedido.class)
-//					.getSingleResult();
+			PedidoStatus pedidoPago2 = entityManager.createQuery("SELECT new com.algaworks.ecommerce.conhecendoentitymanager.PedidoStatus(p.id, p.status) FROM Pedido p WHERE p.id = 1", PedidoStatus.class)
+					.getSingleResult();
 
-//			Assert.assertEquals(pedido.getStatus(), pedidoPago2.getStatus());
+			Assert.assertEquals(pedido.getStatus(), pedidoPago2.getStatus());
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
