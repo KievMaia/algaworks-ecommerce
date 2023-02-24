@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-class PedidoStatus {
+public class PedidoStatus {
 	private Integer id;
 	private StatusPedido status;
 

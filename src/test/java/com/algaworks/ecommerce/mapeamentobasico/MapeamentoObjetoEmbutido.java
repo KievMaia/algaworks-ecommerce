@@ -29,7 +29,7 @@ public class MapeamentoObjetoEmbutido extends EntityManagerTest{
 		
 		Pedido pedido = Pedido.builder()
 //			.id(1) Comentado porque está sendo utilizado strategy IDENTITY
-			.dataPedido(LocalDateTime.now())
+			.dataCriacao(LocalDateTime.now())
 			.status(StatusPedido.AGUARDANDO)
 			.total(new BigDecimal("1000"))
 			.entregaEntrega(enderecoEntrega)

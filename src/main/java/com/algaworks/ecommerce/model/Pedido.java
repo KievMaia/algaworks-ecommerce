@@ -16,6 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
+import javax.persistence.PostRemove;
+import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -41,8 +46,11 @@ public class Pedido {
 	@ManyToOne(optional = false)
 	private Cliente cliente;
 	
-	@Column(name = "data_pedido")
-	private LocalDateTime dataPedido;
+	@Column(name = "data_criacao")
+	private LocalDateTime dataCriacao;
+	
+	@Column(name = "data_ultima_atualizacao")
+	private LocalDateTime dataUltimaAtualizacao;
 	
 	@Column(name = "data_conclusao")
 	private LocalDateTime dataConclusao;
@@ -63,4 +71,41 @@ public class Pedido {
 	
 	@OneToOne(mappedBy = "pedido")
 	private PagamentoCartao pagamento;
+	
+//	@PrePersist
+//	@PreUpdate
+	public void calcularTotal() {
+		if (itens != null) {
+			total = itens.stream()
+							.map(ItemPedido::getPrecoProduto)
+							.reduce(BigDecimal.ZERO, BigDecimal::add);
+		}
+	}
+	
+	@PrePersist
+	public void aoPersistir( ) {
+		dataCriacao = LocalDateTime.now();
+		calcularTotal();
+	}
+	
+	@PreUpdate
+	public void aoAtualizar( ) {
+		dataUltimaAtualizacao = LocalDateTime.now();
+		calcularTotal();
+	}
+	
+	@PreRemove
+	public void aoRemover() {
+		System.out.println("Antes de remover o Pedido");
+	}
+	
+	@PostRemove
+	public void aposRemover() {
+		System.out.println("Após de remover o Pedido");
+	}
+	
+	@PostLoad
+	public void aposCarregar() {
+		System.out.println("Após de remover o Pedido");
+	}
 }

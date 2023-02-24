@@ -23,7 +23,7 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest{
 		
 		Pedido pedido = Pedido.builder()
 			.status(StatusPedido.AGUARDANDO)
-			.dataPedido(LocalDateTime.now())
+			.dataCriacao(LocalDateTime.now())
 			.cliente(cliente)
 			.total(BigDecimal.TEN)
 			.build();
