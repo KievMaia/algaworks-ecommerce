@@ -10,6 +10,7 @@ import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Cliente;
 import com.algaworks.ecommerce.model.Estoque;
 import com.algaworks.ecommerce.model.ItemPedido;
+import com.algaworks.ecommerce.model.ItemPedidoId;
 import com.algaworks.ecommerce.model.Pedido;
 import com.algaworks.ecommerce.model.Produto;
 import com.algaworks.ecommerce.model.StatusPedido;
@@ -18,6 +19,8 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest{
 
 	@Test
 	public void verificarRelacionamento() {
+		entityManager.getTransaction().begin();
+		
 		Cliente cliente = entityManager.find(Cliente.class, 1);
 		Produto produto = entityManager.find(Produto.class, 1);
 		
@@ -28,26 +31,28 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest{
 			.total(BigDecimal.TEN)
 			.build();
 		
+		entityManager.persist(pedido);
+		
 		ItemPedido itemPedido = ItemPedido.builder()
+			.pedidoId(pedido.getId())
+			.produtoId(produto.getId())
 			.pedido(pedido)
 			.precoProduto(produto.getPreco())
 			.produto(produto)
 			.quantidade(1)
 			.build();
-			
 
-		entityManager.getTransaction().begin();
-		entityManager.persist(pedido);
 		entityManager.persist(itemPedido);
+		
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
 		
-		Pedido pedidoVerificacao = entityManager.find(Pedido.class, 1);
-		Assert.assertNotNull(pedidoVerificacao.getCliente());
 		
-		ItemPedido itemPedidoVerificacao = entityManager.find(ItemPedido.class, 1);
-		Assert.assertNotNull(itemPedidoVerificacao);
+		ItemPedido itemPedidoIdVerificacao = entityManager.find(ItemPedido.class, new ItemPedidoId(pedido.getId(), produto.getId()));
+		Assert.assertNotNull(itemPedidoIdVerificacao);
+		Assert.assertNotNull(itemPedidoIdVerificacao.getPedido());
+		Assert.assertNotNull(itemPedidoIdVerificacao.getProduto());
 	}
 	
 	@Test
