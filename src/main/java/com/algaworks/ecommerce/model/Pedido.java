@@ -50,10 +50,10 @@ public class Pedido {
 	@ManyToOne(optional = false)
 	private Cliente cliente;
 	
-	@Column(name = "data_criacao")
+	@Column(name = "data_criacao", updatable = false)//updatable false, garante que esse atributo não seja atualizado. O padrão é true, por isso colocamos false.
 	private LocalDateTime dataCriacao;
 	
-	@Column(name = "data_ultima_atualizacao")
+	@Column(name = "data_ultima_atualizacao", insertable = false)//impede a inserção na coluna data_ultima_atualizacao na criação do registro.
 	private LocalDateTime dataUltimaAtualizacao;
 	
 	@Column(name = "data_conclusao")
