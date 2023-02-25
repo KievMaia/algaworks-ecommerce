@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -16,12 +17,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PostLoad;
 import javax.persistence.PostRemove;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import com.algaworks.ecommerce.listener.GenericoListener;
+import com.algaworks.ecommerce.listener.GerarNotaFiscalListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +38,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EntityListeners({GerarNotaFiscalListener.class, GenericoListener.class})
 @Table(name = "pedido")
 public class Pedido {
 
@@ -72,6 +76,10 @@ public class Pedido {
 	@OneToOne(mappedBy = "pedido")
 	private PagamentoCartao pagamento;
 	
+	public boolean isPago() {
+		return StatusPedido.PAGO.equals(status);
+	}
+	
 //	@PrePersist
 //	@PreUpdate
 	public void calcularTotal() {
@@ -104,8 +112,8 @@ public class Pedido {
 		System.out.println("Após de remover o Pedido");
 	}
 	
-	@PostLoad
-	public void aposCarregar() {
-		System.out.println("Após de remover o Pedido");
-	}
+//	@PostLoad
+//	public void aposCarregar() {
+//		System.out.println("Após de remover o Pedido");
+//	}
 }
