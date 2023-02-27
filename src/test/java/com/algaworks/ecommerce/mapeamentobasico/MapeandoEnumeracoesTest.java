@@ -13,9 +13,9 @@ public class MapeandoEnumeracoesTest extends EntityManagerTest{
 	public void testarEnum() {
 		Cliente cliente = Cliente.builder()
 //			.id(4) Comentado porque está sendo utilizado strategy IDENTITY
-			.nome("José Mineiro")
-			.sexo(SexoCliente.MASCULINO)
-			.build();
+		.nome("José Mineiro")
+		.sexo(SexoCliente.MASCULINO)
+		.build();
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(cliente);

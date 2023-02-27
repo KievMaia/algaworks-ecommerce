@@ -9,38 +9,32 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import com.algaworks.ecommerce.listener.GenericoListener;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @EntityListeners({GenericoListener.class})
 @Table(name = "produto")
-public class Produto {
-
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class Produto extends EntidadeBaseInteger{
 	
 	@Column(name = "data_criacao", updatable = false)//updatable false, garante que esse atributo não seja atualizado. O padrão é true, por isso colocamos false.
 	private LocalDateTime dataCriacao;
@@ -74,5 +68,15 @@ public class Produto {
 	@ElementCollection
 	@CollectionTable(name = "produto_atributo", joinColumns = @JoinColumn(name = "produto_id"))
 	private List<Atributo> atributos;
+	
+	@PrePersist
+	public void aoPersistir( ) {
+		dataCriacao = LocalDateTime.now();
+	}
+	
+	@PreUpdate
+	public void aoAtualizar( ) {
+		dataUltimaAtualizacao = LocalDateTime.now();
+	}
 
 }

@@ -46,7 +46,6 @@ public class OperacoesComTransacaoTest extends EntityManagerTest{
 		Assert.assertNotNull(produtoVerificacaoPersist);
 		
 		Produto produtoMerge = Produto.builder()
-				.id(6)
 				.nome("Notebook Dell")
 				.descricao("O melhor da categoria.")
 				.preco(new BigDecimal("2000"))
@@ -101,14 +100,13 @@ public class OperacoesComTransacaoTest extends EntityManagerTest{
 	@Test
 	public void atualizarObjeto() {
 		Produto produto = Produto.builder()
-			.id(1)
 			.nome("Kidle Paperwhite")
 			.descricao("Conheça o novo Kidle")
 			.preco(new BigDecimal("599"))
 			.build();
 		
 		entityManager.getTransaction().begin();
-		entityManager.merge(produto);
+		entityManager.persist(produto);
 		entityManager.getTransaction().commit();
 		
 		entityManager.clear();
