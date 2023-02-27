@@ -34,8 +34,9 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest{
 		entityManager.persist(pedido);
 		
 		ItemPedido itemPedido = ItemPedido.builder()
-			.pedidoId(pedido.getId())
-			.produtoId(produto.getId())
+			//.pedidoId(pedido.getId()) IdClass
+			//.produtoId(produto.getId()) IdClass
+			.id(new ItemPedidoId(pedido.getId(), produto.getId()))
 			.pedido(pedido)
 			.precoProduto(produto.getPreco())
 			.produto(produto)
