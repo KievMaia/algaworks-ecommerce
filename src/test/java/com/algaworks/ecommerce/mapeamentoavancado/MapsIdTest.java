@@ -1,6 +1,7 @@
 package com.algaworks.ecommerce.mapeamentoavancado;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,16 +10,36 @@ import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Cliente;
 import com.algaworks.ecommerce.model.ItemPedido;
 import com.algaworks.ecommerce.model.ItemPedidoId;
+import com.algaworks.ecommerce.model.NotaFiscal;
 import com.algaworks.ecommerce.model.Pedido;
 import com.algaworks.ecommerce.model.Produto;
 import com.algaworks.ecommerce.model.StatusPedido;
 
-public class ChaveCompostaTest extends EntityManagerTest{
+public class MapsIdTest extends EntityManagerTest{
 
 	@Test
-	public void salvarItem() {
-		entityManager.getTransaction().begin();
+	public void inserirPagamento() {
+		Pedido pedido = entityManager.find(Pedido.class, 1);
 		
+		NotaFiscal notaFiscal = NotaFiscal.builder()
+			.pedido(pedido)
+			.dataEmissao(new Date())
+			.xml("</xml>")
+			.build();
+		
+		entityManager.getTransaction().begin();
+		entityManager.persist(notaFiscal);
+		entityManager.getTransaction().commit();
+		
+		entityManager.clear();
+		
+		NotaFiscal notaFiscalVerificacao = entityManager.find(NotaFiscal.class, notaFiscal.getId());
+		Assert.assertNotNull(notaFiscalVerificacao);
+		Assert.assertEquals(pedido.getId(), notaFiscalVerificacao.getId());
+	}
+	
+	@Test
+	public void inserirItemPedido( ) {
 		Cliente cliente = entityManager.find(Cliente.class, 1);
 		Produto produto = entityManager.find(Produto.class, 1);
 		
@@ -29,13 +50,7 @@ public class ChaveCompostaTest extends EntityManagerTest{
 			.total(produto.getPreco())
 			.build();
 		
-		entityManager.persist(pedido);
-		
-		entityManager.flush();
-		
 		ItemPedido itemPedido = ItemPedido.builder()
-			//.pedidoId(pedido.getId()) IdClass
-			//.produtoId(produto.getId()) IdClass
 			.id(new ItemPedidoId())
 			.pedido(pedido)
 			.produto(produto)
@@ -43,21 +58,15 @@ public class ChaveCompostaTest extends EntityManagerTest{
 			.quantidade(1)
 			.build();
 		
+		entityManager.getTransaction().begin();
+		entityManager.persist(pedido);
 		entityManager.persist(itemPedido);
-		
 		entityManager.getTransaction().commit();
 		
-		entityManager.clear();
+		ItemPedido itemPedidoVerificacao = entityManager
+				.find(ItemPedido.class, new ItemPedidoId(pedido.getId(), produto.getId()));
+		Assert.assertNotNull(itemPedidoVerificacao);
 		
-		Pedido pedidoVerificacao = entityManager.find(Pedido.class, pedido.getId());
-		Assert.assertNotNull(pedidoVerificacao);
-		Assert.assertFalse(pedidoVerificacao.getItens().isEmpty());
 	}
 	
-	@Test
-	public void buscarItem() {
-		ItemPedido itemPedido = entityManager.find(ItemPedido.class, new ItemPedidoId(1,1));
-		
-		Assert.assertNotNull(itemPedido);
-	}
 }

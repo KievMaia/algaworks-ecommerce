@@ -1,7 +1,7 @@
 package com.algaworks.ecommerce.relacionamentos;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,8 +11,10 @@ import com.algaworks.ecommerce.model.Cliente;
 import com.algaworks.ecommerce.model.Estoque;
 import com.algaworks.ecommerce.model.ItemPedido;
 import com.algaworks.ecommerce.model.ItemPedidoId;
+import com.algaworks.ecommerce.model.PagamentoCartao;
 import com.algaworks.ecommerce.model.Pedido;
 import com.algaworks.ecommerce.model.Produto;
+import com.algaworks.ecommerce.model.StatusPagamento;
 import com.algaworks.ecommerce.model.StatusPedido;
 
 public class RelacionamentoManyToOneTest extends EntityManagerTest{
@@ -28,22 +30,44 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest{
 			.status(StatusPedido.AGUARDANDO)
 			.dataCriacao(LocalDateTime.now())
 			.cliente(cliente)
-			.total(BigDecimal.TEN)
 			.build();
 		
-		entityManager.persist(pedido);
+		PagamentoCartao pagamentoCartao = PagamentoCartao.builder()
+			.id(pedido.getId())
+			.numero("123456")
+			.status(StatusPagamento.RECEBIDO)
+			.pedido(pedido)
+			.build();
+		
+		pedido.setPagamento(pagamentoCartao);
+		
 		
 		ItemPedido itemPedido = ItemPedido.builder()
 			//.pedidoId(pedido.getId()) IdClass
 			//.produtoId(produto.getId()) IdClass
-			.id(new ItemPedidoId(pedido.getId(), produto.getId()))
+			.id(new ItemPedidoId())
 			.pedido(pedido)
 			.precoProduto(produto.getPreco())
 			.produto(produto)
-			.quantidade(1)
+			.quantidade(2)
 			.build();
+		
+		ItemPedido itemPedido2 = ItemPedido.builder()
+				//.pedidoId(pedido.getId()) IdClass
+				//.produtoId(produto.getId()) IdClass
+				.id(new ItemPedidoId())
+				.pedido(pedido)
+				.precoProduto(produto.getPreco())
+				.produto(produto)
+				.quantidade(2)
+				.build();
+		
+		pedido.setItens(List.of(itemPedido, itemPedido2));
+		pedido.calcularTotal();
 
+		entityManager.persist(pedido);
 		entityManager.persist(itemPedido);
+		entityManager.persist(pagamentoCartao);
 		
 		entityManager.getTransaction().commit();
 		

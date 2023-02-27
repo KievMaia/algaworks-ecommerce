@@ -85,8 +85,8 @@ public class Pedido {
 	public void calcularTotal() {
 		if (itens != null) {
 			total = itens.stream()
-							.map(ItemPedido::getPrecoProduto)
-							.reduce(BigDecimal.ZERO, BigDecimal::add);
+                    .map(item -> item.getPrecoProduto().multiply(new BigDecimal(item.getQuantidade())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
 		}
 	}
 	
