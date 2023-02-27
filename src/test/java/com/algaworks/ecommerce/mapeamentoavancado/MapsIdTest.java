@@ -1,5 +1,6 @@
 package com.algaworks.ecommerce.mapeamentoavancado;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -24,7 +25,7 @@ public class MapsIdTest extends EntityManagerTest{
 		NotaFiscal notaFiscal = NotaFiscal.builder()
 			.pedido(pedido)
 			.dataEmissao(new Date())
-			.xml("</xml>")
+			.xml(carregarNotaFiscal())
 			.build();
 		
 		entityManager.getTransaction().begin();
@@ -69,4 +70,11 @@ public class MapsIdTest extends EntityManagerTest{
 		
 	}
 	
+	private static byte[] carregarNotaFiscal() {
+		try {
+			return SalvandoArquivosTest.class.getResourceAsStream("/nota-fiscal.xml").readAllBytes();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
