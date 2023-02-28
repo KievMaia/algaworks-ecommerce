@@ -35,6 +35,10 @@ target/
 .settings
 .springBeans
 .sts4-cache
+settings/*
+target/*
+settings
+target
 
 ### IntelliJ IDEA ###
 .idea

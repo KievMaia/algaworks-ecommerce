@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
 import com.algaworks.ecommerce.model.Cliente;
-import com.algaworks.ecommerce.model.Pagamento;
 import com.algaworks.ecommerce.model.PagamentoBoleto;
 import com.algaworks.ecommerce.model.PagamentoCartao;
 import com.algaworks.ecommerce.model.Pedido;
@@ -31,7 +30,7 @@ public class HerancaTest extends EntityManagerTest {
 
 	@Test
 	public void buscarPagamentos() {
-		List<Pagamento> pagamentos = entityManager.createQuery("SELECT p FROM Pagamento p").getResultList();
+		List<PagamentoCartao> pagamentos = entityManager.createQuery("SELECT p FROM Pagamento p").getResultList();
 
 		Assert.assertFalse(pagamentos.isEmpty());
 	}
