@@ -9,11 +9,25 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.dto.ProdutoDTO;
 import com.algaworks.ecommerce.model.Cliente;
 import com.algaworks.ecommerce.model.Pedido;
 
 public class BasicoJPQLTest extends EntityManagerTest{
 
+	@Test
+	public void projetarNoDTO() {
+		String jpql = "select new com.algaworks.ecommerce.dto.ProdutoDTO(id, nome) from Produto";
+		
+		TypedQuery<ProdutoDTO> typedQuery = entityManager.createQuery(jpql, ProdutoDTO.class);
+		List<ProdutoDTO> lista = typedQuery.getResultList();
+		
+		Assert.assertFalse(lista.isEmpty());
+		
+		lista.forEach(p -> System.out.println(p.getId() + ", " + p.getNome()));
+		
+	}
+	
 	@Test
 	public void projetarOResultado() {
 		String jpql = "select id, nome from Produto";
