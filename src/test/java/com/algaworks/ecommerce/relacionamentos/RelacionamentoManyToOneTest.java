@@ -32,12 +32,10 @@ public class RelacionamentoManyToOneTest extends EntityManagerTest{
 			.cliente(cliente)
 			.build();
 		
-		PagamentoCartao pagamentoCartao = PagamentoCartao.builder()
-			.id(pedido.getId())
-			.numero("123456")
-			.status(StatusPagamento.RECEBIDO)
-			.pedido(pedido)
-			.build();
+		PagamentoCartao pagamentoCartao = new PagamentoCartao();
+		pagamentoCartao.setPedido(pedido);
+		pagamentoCartao.setStatus(StatusPagamento.PROCESSANDO);
+		pagamentoCartao.setNumeroCartao("123");
 		
 		pedido.setPagamento(pagamentoCartao);
 		

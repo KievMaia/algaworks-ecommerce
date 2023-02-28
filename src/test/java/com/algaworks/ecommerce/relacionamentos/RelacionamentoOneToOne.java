@@ -19,11 +19,10 @@ public class RelacionamentoOneToOne extends EntityManagerTest{
 	public void verificarRelacionamento() {
 		Pedido pedido = entityManager.find(Pedido.class, 1);
 		
-		PagamentoCartao pagamentoCartao = PagamentoCartao.builder()
-			.numero("1234")
-			.status(StatusPagamento.PROCESSANDO)
-			.pedido(pedido)
-			.build();
+		PagamentoCartao pagamentoCartao = new PagamentoCartao();
+		pagamentoCartao.setPedido(pedido);
+		pagamentoCartao.setStatus(StatusPagamento.PROCESSANDO);
+		pagamentoCartao.setNumeroCartao("123");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(pagamentoCartao);
