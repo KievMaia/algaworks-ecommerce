@@ -37,10 +37,11 @@ public class NotaFiscal {
 //				joinColumns = @JoinColumn(name = "nota_fiscal_id", unique = true), 
 //				inverseJoinColumns = @JoinColumn(name = "pedido_id", unique = true))
 	private Pedido pedido;
-	
+
+	@Column(nullable = false)
 	@Lob
 	private byte[] xml;
 	
-	@Column(name = "data_emissao")
+	@Column(name = "data_emissao", nullable = false)
 	private Date dataEmissao;
 }

@@ -1,6 +1,5 @@
 package com.algaworks.ecommerce.jpql;
 
-import java.awt.RadialGradientPaint;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -34,5 +33,6 @@ public class JoinTest extends EntityManagerTest{
 		Pagamento pagamento = (Pagamento) objects[1];
 		
 		pedido.getCliente().getNome();
+		pagamento.getStatus();
 	}
 }

@@ -2,13 +2,7 @@ package com.algaworks.ecommerce.model;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +20,7 @@ import lombok.Setter;
 		uniqueConstraints = { @UniqueConstraint(name = "unq_nome", columnNames = {"nome"}) })
 public class Categoria extends EntidadeBaseInteger{
 
+	@Column(columnDefinition = "varchar(100) not null")
 	private String nome;
 	
 	@ManyToOne

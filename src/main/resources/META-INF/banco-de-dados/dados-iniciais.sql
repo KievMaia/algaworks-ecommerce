@@ -3,8 +3,8 @@ insert into produto (id, nome, preco, data_criacao, descricao) values (3, 'Câme
 
 insert into estoque (id, quantidade, produto_id) values (1, 10, 1);
 
-insert into cliente (id, nome) values (1, 'Fernando Medeiros');
-insert into cliente (id, nome) values (2, 'Marcos Mariano');
+insert into cliente (id, nome, cpf, sexo) values (1, 'Fernando Medeiros', '000', 'MASCULINO');
+insert into cliente (id, nome, cpf, sexo) values (2, 'Marcos Mariano', '111', 'MASCULINO');
 
 insert into pedido (id, cliente_id, data_criacao, total, status) values (1, 1, date_sub(sysdate(), interval 5 day), 998.0, 'AGUARDANDO');
 insert into pedido (id, cliente_id, data_criacao, total, status) values (2, 1, sysdate(), 499.0, 'AGUARDANDO');

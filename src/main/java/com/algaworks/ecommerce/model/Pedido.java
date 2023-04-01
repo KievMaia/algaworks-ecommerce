@@ -37,75 +37,79 @@ import lombok.Setter;
 @Entity
 @EntityListeners({GerarNotaFiscalListener.class, GenericoListener.class})
 @Table(name = "pedido")
-public class Pedido extends EntidadeBaseInteger{
-	
-	@ManyToOne(optional = false)
-	private Cliente cliente;
-	
-	@Column(name = "data_criacao", updatable = false)//updatable false, garante que esse atributo não seja atualizado. O padrão é true, por isso colocamos false.
-	private LocalDateTime dataCriacao;
-	
-	@Column(name = "data_ultima_atualizacao", insertable = false)//impede a inserção na coluna data_ultima_atualizacao na criação do registro.
-	private LocalDateTime dataUltimaAtualizacao;
-	
-	@Column(name = "data_conclusao")
-	private LocalDateTime dataConclusao;
-	
-	@OneToOne(mappedBy = "pedido")
-	private NotaFiscal notaFiscal;
-	
-	private BigDecimal total;
-	
-	@Enumerated(EnumType.STRING)
-	private StatusPedido status;
+public class Pedido extends EntidadeBaseInteger {
 
-	@Embedded
-	private EnderecoEntregaPedido entregaEntrega;
-	
-	@OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
-	private List<ItemPedido> itens;
-	
-	@OneToOne(mappedBy = "pedido")
-	private Pagamento pagamento;
-	
-	public boolean isPago() {
-		return StatusPedido.PAGO.equals(status);
-	}
-	
-//	@PrePersist
-//	@PreUpdate
-	public void calcularTotal() {
-		if (itens != null) {
-			total = itens.stream()
+    @ManyToOne(optional = false)
+    private Cliente cliente;
+
+    @Column(name = "data_criacao", updatable = false, nullable = false)
+    //updatable false, garante que esse atributo não seja atualizado. O padrão é true, por isso colocamos false.
+    private LocalDateTime dataCriacao;
+
+    @Column(name = "data_ultima_atualizacao", insertable = false)
+    //impede a inserção na coluna data_ultima_atualizacao na criação do registro.
+    private LocalDateTime dataUltimaAtualizacao;
+
+    @Column(name = "data_conclusao")
+    private LocalDateTime dataConclusao;
+
+    @OneToOne(mappedBy = "pedido")
+    private NotaFiscal notaFiscal;
+
+    @Column(nullable = false)
+    private BigDecimal total;
+
+    @Column(length = 30, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status;
+
+    @Embedded
+    private EnderecoEntregaPedido entregaEntrega;
+
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
+    private List<ItemPedido> itens;
+
+    @OneToOne(mappedBy = "pedido")
+    private Pagamento pagamento;
+
+    public boolean isPago() {
+        return StatusPedido.PAGO.equals(status);
+    }
+
+    //	@PrePersist
+    //	@PreUpdate
+    public void calcularTotal() {
+        if (itens != null) {
+            total = itens.stream()
                     .map(item -> item.getPrecoProduto().multiply(new BigDecimal(item.getQuantidade())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
-		}
-	}
-	
-	@PrePersist
-	public void aoPersistir( ) {
-		dataCriacao = LocalDateTime.now();
-		calcularTotal();
-	}
-	
-	@PreUpdate
-	public void aoAtualizar( ) {
-		dataUltimaAtualizacao = LocalDateTime.now();
-		calcularTotal();
-	}
-	
-	@PreRemove
-	public void aoRemover() {
-		System.out.println("Antes de remover o Pedido");
-	}
-	
-	@PostRemove
-	public void aposRemover() {
-		System.out.println("Após de remover o Pedido");
-	}
-	
-//	@PostLoad
-//	public void aposCarregar() {
-//		System.out.println("Após de remover o Pedido");
-//	}
+        }
+    }
+
+    @PrePersist
+    public void aoPersistir() {
+        dataCriacao = LocalDateTime.now();
+        calcularTotal();
+    }
+
+    @PreUpdate
+    public void aoAtualizar() {
+        dataUltimaAtualizacao = LocalDateTime.now();
+        calcularTotal();
+    }
+
+    @PreRemove
+    public void aoRemover() {
+        System.out.println("Antes de remover o Pedido");
+    }
+
+    @PostRemove
+    public void aposRemover() {
+        System.out.println("Após de remover o Pedido");
+    }
+
+    //	@PostLoad
+    //	public void aposCarregar() {
+    //		System.out.println("Após de remover o Pedido");
+    //	}
 }

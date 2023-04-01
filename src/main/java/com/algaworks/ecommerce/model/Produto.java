@@ -40,14 +40,16 @@ import lombok.Setter;
 		indexes = { @Index(name = "idxnome", columnList = "nome") })
 public class Produto extends EntidadeBaseInteger{
 	
-	@Column(name = "data_criacao", updatable = false)//updatable false, garante que esse atributo não seja atualizado. O padrão é true, por isso colocamos false.
+	@Column(name = "data_criacao", updatable = false, nullable = false)//updatable false, garante que esse atributo não seja atualizado. O padrão é true, por isso colocamos false.
 	private LocalDateTime dataCriacao;
 	
 	@Column(name = "data_ultima_atualizacao", insertable = false)//impede a inserção na coluna data_ultima_atualizacao na criação do registro.
 	private LocalDateTime dataUltimaAtualizacao;
 
+	@Column(length = 100, nullable = false)
 	private String nome;
 
+	@Column(columnDefinition = "varchar(275) default 'descricao'")
 	private String descricao;
 
 	private BigDecimal preco;
@@ -66,7 +68,7 @@ public class Produto extends EntidadeBaseInteger{
 	
 	@ElementCollection
 	@CollectionTable(name = "produto_tag", joinColumns = @JoinColumn(name = "produto_id"))
-	@Column(name = "tag")
+	@Column(name = "tag", length = 50, nullable = false)
 	private List<String> tags;
 	
 	@ElementCollection

@@ -1,9 +1,6 @@
 package com.algaworks.ecommerce.model;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +20,7 @@ public class Estoque extends EntidadeBaseInteger{
 	@OneToOne(optional = false)
 	@JoinColumn(name = "produto_id")
 	private Produto produto;
-	
+
+	@Column(columnDefinition = "integer not null")
 	private Integer quantidade;
 }
