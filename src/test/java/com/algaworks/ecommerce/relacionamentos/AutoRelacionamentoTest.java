@@ -11,11 +11,11 @@ public class AutoRelacionamentoTest extends EntityManagerTest {
 	@Test
 	public void verificarRelacionamento() {
 		Categoria categoriaPai = Categoria.builder()
-			.nome("Eletrônicos")
+			.nome("Futebol")
 			.build();
 		
 		Categoria categoria = Categoria.builder()
-			.nome("Celulares")
+			.nome("Uniformes")
 			.categoriaPai(categoriaPai)
 			.build();
 		

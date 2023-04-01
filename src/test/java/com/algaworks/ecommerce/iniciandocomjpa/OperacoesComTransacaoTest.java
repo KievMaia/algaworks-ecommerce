@@ -48,6 +48,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
 
         Produto produtoMerge = Produto.builder()
                 .nome("Notebook Dell")
+                .dataCriacao(LocalDateTime.now())
                 .descricao("O melhor da categoria.")
                 .preco(new BigDecimal("2000"))
                 .build();
@@ -125,8 +126,7 @@ public class OperacoesComTransacaoTest extends EntityManagerTest {
         entityManager.remove(produto);
         entityManager.getTransaction().commit();
 
-        entityManager.clear(); //Não é necessário na asserção para operação de remoção,
-        //pois o JPA já limpa da memória pois foi uma remoção.
+        //        entityManager.clear(); Não é necessário na asserção para operação de remoção.
 
         Produto produtoVerificacao = entityManager.find(Produto.class, 3);
         Assert.assertNull(produtoVerificacao);

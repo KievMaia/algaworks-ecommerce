@@ -19,7 +19,7 @@ public class MapeamentoObjetoEmbutido extends EntityManagerTest{
 		Cliente cliente = entityManager.find(Cliente.class, 1);
 		
 		EnderecoEntregaPedido enderecoEntrega = EnderecoEntregaPedido.builder()
-			.cep("0000000-00")
+			.cep("000000-00")
 			.logradouro("Rua das Laranjeiras")
 			.numero("123")
 			.bairro("Centro")
@@ -42,7 +42,7 @@ public class MapeamentoObjetoEmbutido extends EntityManagerTest{
 		
 		entityManager.clear();
 		
-		Pedido pedidoVerificacao = entityManager.find(Pedido.class, 2);
+		Pedido pedidoVerificacao = entityManager.find(Pedido.class, 3);
 		Assert.assertNotNull(pedidoVerificacao);
 		Assert.assertNotNull(pedidoVerificacao.getEntregaEntrega());
 		Assert.assertNotNull(pedidoVerificacao.getEntregaEntrega().getCep());

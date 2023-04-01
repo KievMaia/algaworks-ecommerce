@@ -1,22 +1,22 @@
 package com.algaworks.ecommerce.mapeamentoavancado;
 
-import java.util.List;
-
+import com.algaworks.ecommerce.EntityManagerTest;
+import com.algaworks.ecommerce.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.algaworks.ecommerce.EntityManagerTest;
-import com.algaworks.ecommerce.model.Cliente;
-import com.algaworks.ecommerce.model.PagamentoBoleto;
-import com.algaworks.ecommerce.model.PagamentoCartao;
-import com.algaworks.ecommerce.model.Pedido;
-import com.algaworks.ecommerce.model.StatusPagamento;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class HerancaTest extends EntityManagerTest {
 
 	@Test
 	public void salvarCliente() {
-		Cliente cliente = Cliente.builder().nome("Fernanda Morais").build();
+		Cliente cliente = Cliente.builder()
+				.nome("Fernanda Morais")
+				.sexo(SexoCliente.FEMININO)
+				.cpf("3333")
+				.build();
 
 		entityManager.getTransaction().begin();
 		entityManager.persist(cliente);
@@ -37,14 +37,26 @@ public class HerancaTest extends EntityManagerTest {
 
 	@Test
 	public void incluirPagamentoPedidoCartao() {
-		Pedido pedido = entityManager.find(Pedido.class, 1);
+		entityManager.getTransaction().begin();
+		Cliente cliente = entityManager.find(Cliente.class, 1);
+		Produto produto = entityManager.find(Produto.class, 1);
+
+		Pedido pedido = Pedido.builder()
+				.cliente(cliente)
+				.dataCriacao(LocalDateTime.now())
+				.status(StatusPedido.AGUARDANDO)
+				.total(produto.getPreco())
+				.build();
+
+		entityManager.persist(pedido);
+
+		entityManager.flush();
 
 		PagamentoCartao pagamentoCartao = new PagamentoCartao();
 		pagamentoCartao.setPedido(pedido);
 		pagamentoCartao.setStatus(StatusPagamento.PROCESSANDO);
 		pagamentoCartao.setNumeroCartao("123");
-		
-		entityManager.getTransaction().begin();
+
 		entityManager.persist(pagamentoCartao);
 		entityManager.getTransaction().commit();
 
@@ -56,12 +68,12 @@ public class HerancaTest extends EntityManagerTest {
 	
 	@Test
 	public void incluirPagamentoPedidoBoleto() {
-		Pedido pedido = entityManager.find(Pedido.class, 2);
+		Pedido pedido = entityManager.find(Pedido.class, 1);
 
 		PagamentoBoleto pagamentoBoleto = new PagamentoBoleto();
 		pagamentoBoleto.setPedido(pedido);
 		pagamentoBoleto.setStatus(StatusPagamento.PROCESSANDO);
-		pagamentoBoleto.setCodigoBarras("123");
+		pagamentoBoleto.setCodigoBarras("1234");
 		
 		entityManager.getTransaction().begin();
 		entityManager.persist(pagamentoBoleto);
