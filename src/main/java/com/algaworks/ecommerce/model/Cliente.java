@@ -4,22 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +18,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@SecondaryTable(name = "cliente_detalhe", pkJoinColumns = @PrimaryKeyJoinColumn(name = "cliente_id"))
+@SecondaryTable(name = "cliente_detalhe", pkJoinColumns = @PrimaryKeyJoinColumn(name = "cliente_id"),
+				foreignKey = @ForeignKey(name = "fk_cleinte_detalhe_cliente"))
 @Entity
 @Table(name = "cliente", 
 	uniqueConstraints = { @UniqueConstraint(name = "unq_cpf", columnNames = {"cpf"}) },
@@ -48,7 +34,7 @@ public class Cliente extends EntidadeBaseInteger{
 	
 	@ElementCollection
 	@CollectionTable(name = "cliente_contato", 
-			joinColumns = @JoinColumn(name = "cliente_id"))
+			joinColumns = @JoinColumn(name = "cliente_id"), foreignKey = @ForeignKey(name = "fk_cliente_contatos"))
 	@MapKeyColumn(name = "tipo")
 	@Column(name = "descricao")
 	private Map<String, String> contatos;
