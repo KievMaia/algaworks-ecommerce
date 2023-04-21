@@ -53,7 +53,7 @@ public class Pedido extends EntidadeBaseInteger {
     @Embedded
     private EnderecoEntregaPedido entregaEntrega;
 
-    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST)
     private List<ItemPedido> itens;
 
     @OneToOne(mappedBy = "pedido")
